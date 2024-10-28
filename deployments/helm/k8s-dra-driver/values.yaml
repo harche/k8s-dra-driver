@@ -20,12 +20,13 @@
 # If the NVIDIA GPU driver is managed using the NVIDIA GPU Driver Container,
 # this is typically /run/nvidia/driver.
 # For driver installed directly on a host, a value of `/` is used.
-nvidiaDriverRoot: /
+nvidiaDriverRoot: "/run/nvidia/driver"
+
 
 # Specify the path of CTK binary (nvidia-ctk) on the host,
 # as it should appear in the the generated CDI specification.
 # The path depends on the system that runs on the node.
-nvidiaCtkPath: /usr/bin/nvidia-ctk
+nvidiaCtkPath: "/var/usrlocal/nvidia/toolkit/nvidia-ctk"
 
 nameOverride: ""
 fullnameOverride: ""
@@ -38,10 +39,10 @@ deviceClasses: ["gpu", "mig", "imex"]
 
 imagePullSecrets: []
 image:
-  repository: nvcr.io/nvidia/cloud-native/k8s-dra-driver
+  repository: quay.io/harpatil/k8s-dra-driver 
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "6.0"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -85,6 +86,8 @@ kubeletPlugin:
     plugin:
       securityContext:
         privileged: true
+        seccompProfile: 
+          type: Unconfined
       resources: {}
   affinity:
     nodeAffinity:

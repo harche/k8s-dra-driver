@@ -37,6 +37,13 @@ spec:
     resources:
       claims:
       - name: gpu
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
   resourceClaims:
   - name: gpu
     resourceClaimTemplateName: single-gpu
@@ -58,6 +65,13 @@ spec:
     resources:
       claims:
       - name: gpu
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
   resourceClaims:
   - name: gpu
     resourceClaimTemplateName: single-gpu

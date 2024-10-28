@@ -13,7 +13,7 @@
 # limitations under the License.
 
 BUILD_MULTI_ARCH_IMAGES ?= no
-DOCKER ?= docker
+DOCKER ?= podman
 BUILDX  =
 ifeq ($(BUILD_MULTI_ARCH_IMAGES),true)
 BUILDX = buildx

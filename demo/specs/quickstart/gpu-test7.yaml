@@ -1,0 +1,128 @@
+# Two pods, one container each
+# Each container asking for 1 distinct GPU
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gpu-test7
+
+---
+apiVersion: resource.k8s.io/v1alpha3
+kind: ResourceClaimTemplate
+metadata:
+  namespace: gpu-test7
+  name: a100
+spec:
+  spec:
+    devices:
+      requests:
+      - name: gpu
+        deviceClassName: gpu.nvidia.com
+        selectors:
+        - cel:
+            expression: |
+              device.attributes['gpu.nvidia.com'].productName.lowerAscii().matches('^.*a100.*$')
+
+---
+apiVersion: resource.k8s.io/v1alpha3
+kind: ResourceClaimTemplate
+metadata:
+  namespace: gpu-test7
+  name: h100
+spec:
+  spec:
+    devices:
+      requests:
+      - name: gpu
+        deviceClassName: gpu.nvidia.com
+        selectors:
+        - cel:
+            expression: |
+              device.attributes['gpu.nvidia.com'].productName.lowerAscii().matches('^.*h100.*$')
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: gpu-test7
+  name: pod1
+  labels:
+    app: pod
+spec:
+  containers:
+  - name: ctr
+    image: fedora:39
+    command: ["bash", "-c"]
+    args: ["nvidia-smi -L; trap 'exit 0' TERM; sleep 9999 & wait"]
+    resources:
+      claims:
+      - name: gpu
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+  resourceClaims:
+  - name: gpu
+    resourceClaimTemplateName: a100
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: gpu-test7
+  name: pod2
+  labels:
+    app: pod
+spec:
+  containers:
+  - name: ctr
+    image: fedora:39
+    command: ["bash", "-c"]
+    args: ["nvidia-smi -L; trap 'exit 0' TERM; sleep 9999 & wait"]
+    resources:
+      claims:
+      - name: gpu
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+  resourceClaims:
+  - name: gpu
+    resourceClaimTemplateName: a100
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: gpu-test7
+  name: pod3
+  labels:
+    app: pod
+spec:
+  containers:
+  - name: ctr
+    image: fedora:39
+    command: ["bash", "-c"]
+    args: ["nvidia-smi -L; trap 'exit 0' TERM; sleep 9999 & wait"]
+    resources:
+      claims:
+      - name: gpu
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+  resourceClaims:
+  - name: gpu
+    resourceClaimTemplateName: h100
+

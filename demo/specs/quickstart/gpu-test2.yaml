@@ -35,6 +35,13 @@ spec:
     resources:
       claims:
       - name: shared-gpu
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
   - name: ctr1
     image: ubuntu:22.04
     command: ["bash", "-c"]
@@ -42,6 +49,13 @@ spec:
     resources:
       claims:
       - name: shared-gpu
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
   resourceClaims:
   - name: shared-gpu
     resourceClaimTemplateName: single-gpu

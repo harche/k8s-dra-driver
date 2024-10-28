@@ -36,6 +36,13 @@ spec:
     resources:
       claims:
       - name: shared-gpu
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
   resourceClaims:
   - name: shared-gpu
     resourceClaimName: single-gpu
@@ -57,6 +64,13 @@ spec:
     resources:
       claims:
       - name: shared-gpu
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
   resourceClaims:
   - name: shared-gpu
     resourceClaimName: single-gpu

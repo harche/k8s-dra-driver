@@ -77,7 +77,7 @@ spec:
         - name: NVIDIA_DRIVER_ROOT
           value: "{{ .Values.nvidiaDriverRoot }}"
         - name: NVIDIA_VISIBLE_DEVICES
-          value: void
+          value: all
         - name: CDI_ROOT
           value: /var/run/cdi
         - name: NVIDIA_MIG_CONFIG_DEVICES

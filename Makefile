@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DOCKER   ?= docker
+DOCKER   ?= podman
 MKDIR    ?= mkdir
 TR       ?= tr
 CC       ?= cc
